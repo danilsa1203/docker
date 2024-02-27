@@ -1,0 +1,28 @@
+services:
+  aplicacion-rust:
+    container_name: aplicacion-rust
+    image: danilsa/aplicacion-rust:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgres://postgres:postgres@dan:5432/postgres  
+    
+    ports:
+      - '6001:6001'
+    depends_on:
+      - dan  
+  dan:
+    container_name: dan
+    image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
